@@ -1,7 +1,5 @@
 # Unsupervised detection of anomalous sounds
 
-## Goal
-
 The primary objective of this project was to develop techniques for automatically identifying whether the sounds produced by industrial machines are normal or anomalous (faulty machines). This is crucial for ensuring efficient and safe operations in the context of AI-based factory automation.
 The main challenge of this task is to detect unknown anomalous sounds under the condition that only normal sound samples have been provided as training data.
 
