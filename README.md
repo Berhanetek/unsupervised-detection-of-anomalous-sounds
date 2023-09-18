@@ -1,11 +1,11 @@
 # Unsupervised detection of anomalous sounds
 
-The primary objective of this project was to develop techniques for automatically identifying whether the sounds produced by industrial machines are normal or anomalous (faulty machines). This is crucial for ensuring efficient and safe operations in the context of AI-based factory automation.
-The main challenge of this task is to detect unknown anomalous sounds under the condition that only normal sound samples have been provided as training data.
+in the context of AI-based factory automation, the objective of this project is to automatically identify whether the sounds produced by industrial machines are normal or anomalous (faulty machines). This is crucial for ensuring efficient and safe operations 
+Goal is to detect unknown anomalous sounds under the condition that only normal sound samples have been provided as training data.
 
 
 ## Data and Preprocessing
-The dataset used is taken from [Malfunctioning Industrial Machine Investigation And Inspection](https://arxiv.org/abs/1909.09347) aka MIMII dataset (Detection and Classification of Acoustic Scenes and Events 2019 Workshop)
+The dataset used is a subset of [Malfunctioning Industrial Machine Investigation And Inspection](https://arxiv.org/abs/1909.09347) aka MIMII dataset (Detection and Classification of Acoustic Scenes and Events 2019 Workshop)
 
 <p align="center">
   <img src="https://github.com/Berhanetek/unsupervised-detection-of-anomalous-sounds/assets/60297609/34c826a4-a2e1-43e8-a107-228337c16f20" width="600">
@@ -13,8 +13,8 @@ The dataset used is taken from [Malfunctioning Industrial Machine Investigation 
 
 ### Spectrograms
 Preprocessing the gived audio files is a crucial step before diving deep into any modeling. Using the raw audio files comes with some problems some of which are:
-Temporal Invariance: Models trained directly on raw waveforms may struggle with variations in timing and duration. The same sound might occur at different points in time, and the model should recognize it regardless of when it happens.
-High Dimensionality: Raw audio waveforms are continuous signals with high temporal resolution. They consist of amplitude values sampled at very fine time intervals. This high-dimensional data can be computationally intensive to process directly
+ - Temporal Invariance: Models trained directly on raw waveforms may struggle with variations in timing and duration. The same sound might occur at different points in time, and the model should recognize it regardless of when it happens.
+ - High Dimensionality: Raw audio waveforms are continuous signals with high temporal resolution. They consist of amplitude values sampled at very fine time intervals. This high-dimensional data can be computationally intensive to process directly
 
 The approach we took is to convert the raw audio files and convert them into spectrograms so we can go ahead with the problem as if it's a vision problem.
 
@@ -39,4 +39,17 @@ Another technique used is [Mixup](https://arxiv.org/abs/1710.09412). The idea be
 
 ## Problem setup and model development 
 
-![image](https://github.com/Berhanetek/unsupervised-detection-of-anomalous-sounds/assets/60297609/b1f881c0-92ee-48ad-85d9-fb369f3a53ab)
+<p align="center">
+  <img src="https://github.com/Berhanetek/unsupervised-detection-of-anomalous-sounds/assets/60297609/b1f881c0-92ee-48ad-85d9-fb369f3a53ab" width="600">
+</p>
+
+
+Is this a 2 class classification problem(Normal vs Anomalous)? Not really. This is because our training data is composed of only normal samples. So it's better to find another learning / training mechanism to learn the underlying features of the data. Used self-suervised learning for this.
+
+Pretext task = Classification - but classification of the samples into the machine types (machine 1, machine 2) and not normal/anomalous,
+However, my primary interest was in detecting anomalies, not in accurate class predictions. To achieve this, I devised a novel method of calculating anomaly scores based on the model's softmax probabilities. This allowed me to quantify the uncertainty or 'anomalousness' of each sample.
+
+Can this be considered as self supervised?
+ - No Explicit Anomaly Labels: Instead of having explicit anomaly labels, you are leveraging the model's generated labels to calculate anomaly scores. The anomaly scores serve as a measure of how anomalous a given sample is based on the model's classification certainty.
+ - Utilizing Model's Representations: The classification model is learning to extract meaningful representations from the data to perform the pretext task. These representations are then repurposed to serve the anomaly detection task.
+ - Self-Generated Supervision: The model learns from the patterns inherent in the data itself, essentially creating its own supervision through the classification task.
