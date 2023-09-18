@@ -4,15 +4,14 @@ The primary objective of this project was to develop techniques for automaticall
 The main challenge of this task is to detect unknown anomalous sounds under the condition that only normal sound samples have been provided as training data.
 
 
-### Data and Preprocessing
+## Data and Preprocessing
 The dataset used is taken from [Malfunctioning Industrial Machine Investigation And Inspection](https://arxiv.org/abs/1909.09347) aka MIMII dataset (Detection and Classification of Acoustic Scenes and Events 2019 Workshop)
 
 <p align="center">
   <img src="https://github.com/Berhanetek/unsupervised-detection-of-anomalous-sounds/assets/60297609/34c826a4-a2e1-43e8-a107-228337c16f20" width="600">
 </p>
 
-
-
+### Spectrograms
 Preprocessing the gived audio files is a crucial step before diving deep into any modeling. Using the raw audio files comes with some problems some of which are:
 Temporal Invariance: Models trained directly on raw waveforms may struggle with variations in timing and duration. The same sound might occur at different points in time, and the model should recognize it regardless of when it happens.
 High Dimensionality: Raw audio waveforms are continuous signals with high temporal resolution. They consist of amplitude values sampled at very fine time intervals. This high-dimensional data can be computationally intensive to process directly
@@ -30,4 +29,14 @@ To accomplish this we used librosa, an audio processing package
   <img src="https://github.com/Berhanetek/unsupervised-detection-of-anomalous-sounds/assets/60297609/f7fd5107-b485-4035-8e62-e1dbb479805b" width="600">
 </p>
 
+### Mixup
+Another technique used is [Mixup](https://arxiv.org/abs/1710.09412). The idea behind it is interpolation: by combining two samples, mixup creates a new data point that lies between the original examples in feature space. This is good for smoother decision boundaries, improved generalization, learning of invariant and discriminative features.
 
+
+<p align="center">
+  <img src="https://github.com/Berhanetek/unsupervised-detection-of-anomalous-sounds/assets/60297609/e999905c-f050-443b-b853-fb7546dc2a5d" width="400">
+</p>
+
+## Problem setup and model development 
+
+![image](https://github.com/Berhanetek/unsupervised-detection-of-anomalous-sounds/assets/60297609/b1f881c0-92ee-48ad-85d9-fb369f3a53ab)
